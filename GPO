@@ -231,7 +231,11 @@ do     -- GPO
 
     local Lunar = Library:CreateWindow("Lunar // GPO");
     local Main = Lunar:CreateTab("Main");
+    local Settings = Lunar:CreateTab("Settings");
     local Section = Main:CreateSection("Main");
+
+    Settings:CreateKeybind({ Text = "Hide UI", Default = "End", Callback = Library.Visible });
+    Settings:CreateButton({ Text = "Unload", Callback = Library.Unload });
 
     local ImpelCheckpoint = 0;
 
