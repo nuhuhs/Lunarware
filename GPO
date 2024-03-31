@@ -1,6 +1,7 @@
+-- GPO Impel DOWN
 local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/nuhuhs/LunarUI/main/Main'))();
 
-do     -- Anti Error
+do -- Anti Error
     pcall(function()
         for _, v in pairs(getconnections(game:GetService("ScriptContext").Error)) do
             v:Disable()
@@ -236,8 +237,8 @@ local Settings = Lunar:CreateTab("Settings");
 local Section = Main:CreateSection("Main");
 local SettingSection = Settings:CreateSection("Settings");
 
-SettingSection:CreateKeybind({ Text = "Hide UI", Default = "End", Callback = Library.Visible });
-SettingSection:CreateButton({ Text = "Unload", Callback = Library.Unload });
+SettingSection:CreateKeybind({ Text = "Hide UI", Default = "End", Callback = function() Library.Visible(); end, });
+SettingSection:CreateButton({ Text = "Unload", Callback = function() Library:Unload(); end });
 
 local ImpelCheckpoint = 0;
 
