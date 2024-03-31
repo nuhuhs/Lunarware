@@ -1,5 +1,6 @@
 do     -- GPO
-    local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/nuhuhs/LunarUI/main/Main'))()
+    local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/nuhuhs/LunarUI/main/Main'))();
+
     do -- Anti Error
         pcall(function()
             for _, v in pairs(getconnections(game:GetService("ScriptContext").Error)) do
@@ -8,6 +9,8 @@ do     -- GPO
             end
         end)
     end
+
+    print(Library);
 
     local Checkpoints = {
         [1] = { CFrame = CFrame.new(2951.60474, 2075.44531, -13833), Wait = 1 },
@@ -233,9 +236,10 @@ do     -- GPO
     local Main = Lunar:CreateTab("Main");
     local Settings = Lunar:CreateTab("Settings");
     local Section = Main:CreateSection("Main");
+    local SettingSection = Settings:CreateSection("Settings");
 
-    Settings:CreateKeybind({ Text = "Hide UI", Default = "End", Callback = Library.Visible });
-    Settings:CreateButton({ Text = "Unload", Callback = Library.Unload });
+    SettingSection:CreateKeybind({ Text = "Hide UI", Default = "End", Callback = Library.Visible });
+    SettingSection:CreateButton({ Text = "Unload", Callback = Library.Unload });
 
     local ImpelCheckpoint = 0;
 
