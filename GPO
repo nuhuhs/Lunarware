@@ -245,6 +245,7 @@ local ImpelCheckpoint = 0;
 local AutoImpel = Section:CreateToggle({
     Text = "Auto Impel",
     Default = false,
+    Flag = "AutoImpel_Flag",
 
     Callback = function(Value)
         getgenv().AutoImpel = Value;
@@ -262,10 +263,13 @@ local AutoImpel = Section:CreateToggle({
             task.wait(2.5);
             db = false;
             Checkpoints[ImpelCheckpoint - 1].Wait = 0;
+
+            if not startTick then
+                getgenv().startTick = tick();
+            end;
         end);
 
         local kelvin;
-
 
         while AutoImpel do
             if not db then
@@ -341,7 +345,9 @@ local AutoImpel = Section:CreateToggle({
                         end;
                     else
                         if Checkpoints[ImpelCheckpoint] and tick() - lastMob >= .5 + (Checkpoints[ImpelCheckpoint - 1].Wait or 0) + ((GetSpeed() >= 150 and 1.5) or 0) then
-                            if ImpelCheckpoint == 47 and not autoRedo then return; end;
+                            if ImpelCheckpoint == 47 and not autoRedo then continue; end;
+                            if ImpelCheckpoint == 46 and tick() - (startTick or tick()) <= timeToDo then continue; end;
+
                             local isDone = TweenTo(Checkpoints[ImpelCheckpoint].CFrame);
 
                             if isDone then
@@ -364,6 +370,7 @@ local AutoImpel = Section:CreateToggle({
 local autoRedo = Section:CreateToggle({
     Text = "Auto Redo",
     Default = false,
+    Flag = "autoRedo_Flag",
 
     Callback = function(Value)
         getgenv().autoRedo = Value;
@@ -377,6 +384,7 @@ local SetSpeed = Section:CreateSlider({
     Default = 49,
     Max = 5000,
     Min = 0,
+    Flag = "TweenSpeed_Flag",
 
     Callback = function(Value)
         Storage['TweenSpeed'] = Value;
@@ -386,6 +394,7 @@ local SetSpeed = Section:CreateSlider({
 local AutoSpeed = Section:CreateToggle({
     Text = "Autolimit Speed",
     Default = false,
+    Flag = "AutoSpeed_Flag",
 
     Callback = function(Value)
         getgenv().Autolimit_Speed = Value;
@@ -403,6 +412,8 @@ local SpeedBypasses = Section:CreateDropdown({
     Text = "Speed Bypasses",
     Multi = true,
     Options = { "Geppo", "Dash", "Pika", "Gomu" },
+    Flag = "SpeedBypasses_Flag",
+
     Callback = function(Value)
         getgenv().CurrentBypasses = Value;
     end,
@@ -413,6 +424,7 @@ Section:CreateDivider();
 local FlowerStack = Section:CreateToggle({
     Text = "Stack Flower Sword",
     Default = false,
+    Flag = "FlowerStacker",
 
     Callback = function(Value)
         getgenv().FlowerStack = Value;
@@ -428,6 +440,7 @@ local FlowerStack = Section:CreateToggle({
 local Noclip = Section:CreateToggle({
     Text = 'Toggle Noclip',
     Default = false,
+    Flag = "Plr_Noclip_Flag",
 
     Callback = function(Value)
         getgenv().noclip = Value
@@ -448,3 +461,21 @@ local Noclip = Section:CreateToggle({
         end;
     end,
 });
+
+Section:CreateDivider();
+
+local TimeTaken = Section:CreateSlider({
+    Text = "Minimum TTC (Time to Complete)",
+    Default = 8,
+    Max = 16,
+    Min = 6,
+    Flag = "timeToDo_Flag",
+
+    Callback = function(Value)
+        getgenv().timeToDo = Value * 60;
+    end,
+});
+
+local TimeTaken = Section:CreateLabel({Text = "-- IF TO LOW U GET SHADOW BANNED (NO TRADING NO OPENING CHESTS)"});
+
+Library:LoadSettings();
