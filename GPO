@@ -262,10 +262,8 @@ local AutoImpel = Section:CreateToggle({
             db = true;
             task.wait(2.5);
             db = false;
-            if Checkpoints[ImpelCheckpoint - 1] then
-                Checkpoints[ImpelCheckpoint - 1].Wait = 0;
-            end;
-            
+            Checkpoints[ImpelCheckpoint - 1].Wait = 0;
+
             if not startTick then
                 getgenv().startTick = tick();
             end;
@@ -306,15 +304,15 @@ local AutoImpel = Section:CreateToggle({
                         end;
                     end;
                 elseif ImpelCheckpoint == 1 then
-                    if (Nearest and Nearest:FindFirstChild("HumanoidRootPart") and (hrp.Position - Nearest:FindFirstChild("HumanoidRootPart").Position).Magnitude >= 350) then
-                        local isDone = TweenTo(Checkpoints[1].CFrame);
+                    local isDone = TweenTo(Checkpoints[1].CFrame);
 
-                        if isDone then
+                    if isDone then
+                        if (Nearest and Nearest:FindFirstChild("HumanoidRootPart") and (hrp.Position - Nearest:FindFirstChild("HumanoidRootPart").Position).Magnitude >= 350) then
                             ImpelCheckpoint = ImpelCheckpoint + 1;
-                        end;
-                    else
-                        if Nearest and Nearest:FindFirstChild("HumanoidRootPart") then
-                            TweenTo(Nearest:FindFirstChild("HumanoidRootPart").CFrame);
+                        else
+                            if Nearest and Nearest:FindFirstChild("HumanoidRootPart") then
+                                TweenTo(Nearest:FindFirstChild("HumanoidRootPart").CFrame);
+                            end;
                         end;
                     end;
                 elseif ImpelCheckpoint == 2 then
@@ -478,6 +476,6 @@ local TimeTaken = Section:CreateSlider({
     end,
 });
 
-local TimeTaken = Section:CreateLabel({ Text = "-- IF TO LOW U GET SHADOW BANNED (NO TRADING NO OPENING CHESTS)" });
+local TimeTaken = Section:CreateLabel({Text = "-- IF TO LOW U GET SHADOW BANNED (NO TRADING NO OPENING CHESTS)"});
 
 Library:LoadSettings();
