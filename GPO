@@ -258,12 +258,22 @@ local AutoImpel = Section:CreateToggle({
             Storage['impelIsland'] = nil;
         end;
 
+        local closestDis = math.huge;
+
+        for i, v in next,(Checkpoints) do
+            if hrp and (hrp.Position - v.CFrame.Position).Magnitude < closestDis then
+                ImpelCheckpoint = i;
+            end
+        end;
+
         Storage['impelIsland'] = workspace:FindFirstChild("Islands").ChildAdded:Connect(function()
             db = true;
             task.wait(2.5);
             db = false;
-            Checkpoints[ImpelCheckpoint - 1].Wait = 0;
-
+            if Checkpoints[ImpelCheckpoint - 1] then
+                Checkpoints[ImpelCheckpoint - 1].Wait = 0;
+            end;
+            
             if not startTick then
                 getgenv().startTick = tick();
             end;
@@ -304,15 +314,15 @@ local AutoImpel = Section:CreateToggle({
                         end;
                     end;
                 elseif ImpelCheckpoint == 1 then
-                    local isDone = TweenTo(Checkpoints[1].CFrame);
+                    if (Nearest and Nearest:FindFirstChild("HumanoidRootPart") and (hrp.Position - Nearest:FindFirstChild("HumanoidRootPart").Position).Magnitude >= 350) then
+                        local isDone = TweenTo(Checkpoints[1].CFrame);
 
-                    if isDone then
-                        if (Nearest and Nearest:FindFirstChild("HumanoidRootPart") and (hrp.Position - Nearest:FindFirstChild("HumanoidRootPart").Position).Magnitude >= 350) then
+                        if isDone then
                             ImpelCheckpoint = ImpelCheckpoint + 1;
-                        else
-                            if Nearest and Nearest:FindFirstChild("HumanoidRootPart") then
-                                TweenTo(Nearest:FindFirstChild("HumanoidRootPart").CFrame);
-                            end;
+                        end;
+                    else
+                        if Nearest and Nearest:FindFirstChild("HumanoidRootPart") then
+                            TweenTo(Nearest:FindFirstChild("HumanoidRootPart").CFrame);
                         end;
                     end;
                 elseif ImpelCheckpoint == 2 then
@@ -476,6 +486,6 @@ local TimeTaken = Section:CreateSlider({
     end,
 });
 
-local TimeTaken = Section:CreateLabel({Text = "-- IF TO LOW U GET SHADOW BANNED (NO TRADING NO OPENING CHESTS)"});
+local TimeTaken = Section:CreateLabel({ Text = "-- IF TO LOW U GET SHADOW BANNED (NO TRADING NO OPENING CHESTS)" });
 
 Library:LoadSettings();
