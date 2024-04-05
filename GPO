@@ -258,14 +258,6 @@ local AutoImpel = Section:CreateToggle({
             Storage['impelIsland'] = nil;
         end;
 
-        local closestDis = math.huge;
-
-        for i, v in next,(Checkpoints) do
-            if hrp and (hrp.Position - v.CFrame.Position).Magnitude < closestDis then
-                ImpelCheckpoint = i;
-            end
-        end;
-
         Storage['impelIsland'] = workspace:FindFirstChild("Islands").ChildAdded:Connect(function()
             db = true;
             task.wait(2.5);
