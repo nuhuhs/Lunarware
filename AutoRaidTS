@@ -7,7 +7,11 @@ local TweenService = game:GetService("TweenService");
 local CoreGui = game:GetService("CoreGui");
 local client = players.LocalPlayer;
 
+print("BEING SIGMA !");
+
 repeat wait(); until client.Character;
+
+print("SIGMA IS HERE!")
 
 local char = client.Character;
 local hrp = char:WaitForChild("HumanoidRootPart");
