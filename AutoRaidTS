@@ -6,6 +6,9 @@ local UserInputService = game:GetService("UserInputService");
 local TweenService = game:GetService("TweenService");
 local CoreGui = game:GetService("CoreGui");
 local client = players.LocalPlayer;
+
+repeat wait(); until client.Character;
+
 local char = client.Character;
 local hrp = char:WaitForChild("HumanoidRootPart");
 local Mouse = client:GetMouse();
