@@ -64,7 +64,7 @@ else
                 v:FindFirstChild("Humanoid").Health = 0;
             end;
 
-            if (not char) or (not hrp) then return; end;
+            if (not char) or (not hrp) then continue; end;
             hrp.CFrame = CFrame.new(102.037888, 4999.7251, -87.1630783);
             
             local bv = Instance.new("BodyVelocity");
