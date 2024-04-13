@@ -59,6 +59,15 @@ else
             if v:FindFirstChild("Humanoid") then
                 v:FindFirstChild("Humanoid").Health = 0;
             end;
+
+            if (not char) or (not hrp) then return; end;
+            hrp.CFrame = CFrame.new(102.037888, 4999.7251, -87.1630783);
+            
+            local bv = Instance.new("BodyVelocity");
+            bv.Parent = hrp;
+            bv.MaxForce = Vector3.new(0,0,0);
+            bv.Velocity = Vector3.new(0,0,0);
+            bv.P = 0;
         end;
     end;
 end;
