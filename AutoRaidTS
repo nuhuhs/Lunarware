@@ -47,7 +47,7 @@ function functions.Void(target)
         bv.Parent = target:FindFirstChild('HumanoidRootPart');
         bv.MaxForce = Vector3.new(math.huge, math.huge, math.huge);
         bv.Velocity = Vector3.new(math.huge, math.huge, math.huge);
-        bv.P = 10000;
+        bv.P = 100000;
     end;
 end;
 
