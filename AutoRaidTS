@@ -11,6 +11,8 @@ print("BEING SIGMA !");
 
 repeat wait(); until client.Character;
 
+wait(StartDelay or 0);
+
 local char = client.Character;
 local hrp = char:WaitForChild("HumanoidRootPart");
 local Mouse = client:GetMouse();
@@ -21,7 +23,6 @@ client.CharacterAdded:Connect(function()
 end);
 
 queue_on_teleport = (syn and syn.queue_on_teleport) or (fluxus and fluxus.queue_on_teleport) or queue_on_teleport
-
 queue_on_teleport([[loadstring(game:HttpGet('https://raw.githubusercontent.com/nuhuhs/Lunarware/main/TSReload'))()]])
 
 local function StartRaid()
