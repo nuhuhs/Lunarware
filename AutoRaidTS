@@ -68,7 +68,7 @@ elseif game.PlaceId == 17047374266 then
 
         if (not char) or (not hrp) then continue; end;
 
-        hrp.CFrame = CFrame.new(102.037888, 4999.7251, -87.1630783);
+        hrp.CFrame = CFrame.new(102.037888, 4995, -87.1630783);
 
         local bv = Instance.new("BodyVelocity");
         bv.Parent = hrp;
