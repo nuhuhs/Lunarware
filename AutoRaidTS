@@ -20,10 +20,6 @@ client.CharacterAdded:Connect(function()
     hrp = char:WaitForChild("HumanoidRootPart");
 end);
 
-queue_on_teleport = (syn and syn.queue_on_teleport) or (fluxus and fluxus.queue_on_teleport) or queue_on_teleport
-
-queue_on_teleport([[loadstring(game:HttpGet('https://raw.githubusercontent.com/nuhuhs/Lunarware/main/TSReload'))()]])
-
 local function StartRaid()
     pcall(function()
         local loop;
@@ -46,7 +42,7 @@ function functions.Void(target)
         local bv = Instance.new("BodyVelocity");
         bv.Parent = target:FindFirstChild('HumanoidRootPart');
         bv.MaxForce = Vector3.new(100000000376832, 100000000376832, 100000000376832);
-        bv.Velocity = Vector3.new(100000000376832, 100000000376832, 100000000376832);
+        bv.Velocity = Vector3.new(100000000376832, -100000000376832, 100000000376832);
         bv.P = 10000;
     end;
 end;
@@ -59,21 +55,40 @@ if game.PlaceId == 14069678431 then
     StartRaid();
 else
     while task.wait() do
+
         for i, v in pairs(workspace:WaitForChild('Entities'):GetChildren()) do
             if v == char then continue; end;
             functions.Void(v);
+
             if v:FindFirstChild("Humanoid") then
                 v:FindFirstChild("Humanoid").Health = 0;
             end;
         end;
 
+        task.spawn(function()
+            pcall(function()
+                for i, v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+                    if v:IsA('BasePart') then
+                        v.CanCollide = false
+                    end
+                    if v:IsA('MeshPart') then
+                        v.CanCollide = false
+                    end;
+                end;
+            end);
+        end);
+
         if (not char) or (not hrp) then continue; end;
-        hrp.CFrame = CFrame.new(102.037888, 4999.7251, -87.1630783);
-        
+
+        hrp.CFrame = CFrame.new(102.037888, 4994, -87.1630783);
+
+
         local bv = Instance.new("BodyVelocity");
         bv.Parent = hrp;
-        bv.MaxForce = Vector3.new(0,0,0);
-        bv.Velocity = Vector3.new(0,0,0);
+        bv.MaxForce = Vector3.new(0, 0, 0);
+        bv.Velocity = Vector3.new(0, 0, 0);
         bv.P = 0;
+
+        game:GetService('RunService').Heartbeat:Wait();
     end;
 end;
