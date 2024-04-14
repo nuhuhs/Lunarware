@@ -63,9 +63,7 @@ else
                 if v == char then continue; end;
                 functions.Void(v);
 
-                if (v.PrimaryPart.Position - hrp.Position).Magnitude < 300 then
-                    hrp.CFrame = v.PrimaryPart.CFrame
-                end;
+                char:PivotTo(v:GetPivot());
 
                 if v:FindFirstChild("Humanoid") then
                     v:FindFirstChild("Humanoid").Health = 0;
