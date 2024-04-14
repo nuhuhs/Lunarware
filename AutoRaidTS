@@ -68,7 +68,10 @@ else
         end;
 
         if (not char) or (not hrp) then continue; end;
-        hrp.CFrame = CFrame.new(102.037888, 4999.7251, -87.1630783);
+        
+        if target and target:FindFirstChild("HumanoidRootPart") then
+            game:GetService("TweenService"):Create(hrp, TweenInfo.new( (hrp.Position - target:WaitForChild("HumanoidRootPart").Position).Magnitude / 200 ), { CFrame = target:WaitForChild("HumanoidRootPart").CFrame }):Play();
+        end;
         
         local bv = Instance.new("BodyVelocity");
         bv.Parent = hrp;
