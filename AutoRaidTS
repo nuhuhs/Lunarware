@@ -45,8 +45,8 @@ function functions.Void(target)
     if char and hrp and target and target:FindFirstChild('HumanoidRootPart') then
         local bv = Instance.new("BodyVelocity");
         bv.Parent = target:FindFirstChild('HumanoidRootPart');
-        bv.MaxForce = Vector3.new(100000000376832, 10000000272564224, 100000000376832);
-        bv.Velocity = Vector3.new(100000000376832, 100000000376832, 100000000376832);
+        bv.MaxForce = Vector3.new(math.huge, math.huge, math.huge);
+        bv.Velocity = Vector3.new(math.huge, math.huge, math.huge);
         bv.P = 10000;
     end;
 end;
@@ -68,7 +68,7 @@ else
         end;
 
         if (not char) or (not hrp) then continue; end;
-        hrp.CFrame = CFrame.new(102.037888, 4999.7251, -87.1630783);
+        hrp.CFrame = CFrame.new(102.037888, 4990.7251, -87.1630783);
         
         local bv = Instance.new("BodyVelocity");
         bv.Parent = hrp;
