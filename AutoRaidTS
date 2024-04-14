@@ -45,7 +45,7 @@ function functions.Void(target)
         local bv = Instance.new("BodyVelocity");
         bv.Parent = target:FindFirstChild('HumanoidRootPart');
         bv.MaxForce = Vector3.new(100000000376832, 100000000376832, 100000000376832);
-        bv.Velocity = Vector3.new(100000000376832, 100000000376832, 100000000376832);
+        bv.Velocity = Vector3.new(100000000376832, -100000000376832, 100000000376832);
         bv.P = 10000;
     end;
 end;
@@ -63,6 +63,8 @@ else
                 if v == char then continue; end;
                 functions.Void(v);
 
+                char:PivotTo(v:GetPivot());
+
                 if v:FindFirstChild("Humanoid") then
                     v:FindFirstChild("Humanoid").Health = 0;
                 end;
@@ -70,6 +72,7 @@ else
         end);
 
         if (not char) or (not hrp) then continue; end;
+
 
         local bv = Instance.new("BodyVelocity");
         bv.Parent = hrp;
