@@ -45,7 +45,7 @@ function functions.Void(target)
     if char and hrp and target and target:FindFirstChild('HumanoidRootPart') then
         local bv = Instance.new("BodyVelocity");
         bv.Parent = target:FindFirstChild('HumanoidRootPart');
-        bv.MaxForce = Vector3.new(100000000376832, 10000000272564224, 100000000376832);
+        bv.MaxForce = Vector3.new(100000000376832, 100000000376832, 100000000376832);
         bv.Velocity = Vector3.new(100000000376832, 100000000376832, 100000000376832);
         bv.P = 10000;
     end;
