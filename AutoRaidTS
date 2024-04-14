@@ -67,19 +67,6 @@ else
                     v:FindFirstChild("Humanoid").Health = 0;
                 end;
             end;
-        end)
-
-        task.spawn(function()
-            pcall(function()
-                for i, v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
-                    if v:IsA('BasePart') then
-                        v.CanCollide = false
-                    end
-                    if v:IsA('MeshPart') then
-                        v.CanCollide = false
-                    end;
-                end;
-            end);
         end);
 
         if (not char) or (not hrp) then continue; end;
