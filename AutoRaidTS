@@ -62,16 +62,17 @@ else
         for i, v in pairs(workspace:WaitForChild('Entities'):GetChildren()) do
             if v == char then continue; end;
             functions.Void(v);
+
+            if v and v:FindFirstChild("HumanoidRootPart") then
+                game:GetService("TweenService"):Create(hrp, TweenInfo.new( (hrp.Position - v:WaitForChild("HumanoidRootPart").Position).Magnitude / 200 ), { CFrame = v:WaitForChild("HumanoidRootPart").CFrame }):Play();
+            end;
+
             if v:FindFirstChild("Humanoid") then
                 v:FindFirstChild("Humanoid").Health = 0;
             end;
         end;
 
         if (not char) or (not hrp) then continue; end;
-        
-        if target and target:FindFirstChild("HumanoidRootPart") then
-            game:GetService("TweenService"):Create(hrp, TweenInfo.new( (hrp.Position - target:WaitForChild("HumanoidRootPart").Position).Magnitude / 200 ), { CFrame = target:WaitForChild("HumanoidRootPart").CFrame }):Play();
-        end;
         
         local bv = Instance.new("BodyVelocity");
         bv.Parent = hrp;
