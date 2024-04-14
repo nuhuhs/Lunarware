@@ -46,7 +46,7 @@ function functions.Void(target)
         local bv = Instance.new("BodyVelocity");
         bv.Parent = target:FindFirstChild('HumanoidRootPart');
         bv.MaxForce = Vector3.new(100000000376832, 100000000376832, 100000000376832);
-        bv.Velocity = Vector3.new(100000000376832, -100000000376832, 100000000376832);
+        bv.Velocity = Vector3.new(100000000376832, 100000000376832, 100000000376832);
         bv.P = 10000;
     end;
 end;
@@ -87,7 +87,7 @@ else
                 if v == char then continue; end;
                 functions.Void(v);
 
-                if v and v:FindFirstChild("HumanoidRootPart") then
+                if v and v:FindFirstChild("HumanoidRootPart") and (hrp.Position - v:FindFirstChild("HumanoidRootPart").Position).Magnitude < 300 then
                     game:GetService("TweenService"):Create(hrp,
                         TweenInfo.new((hrp.Position - v:FindFirstChild("HumanoidRootPart").Position).Magnitude / 100),
                         { CFrame = v:FindFirstChild("HumanoidRootPart").CFrame }):Play();
