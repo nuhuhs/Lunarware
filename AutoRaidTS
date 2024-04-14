@@ -67,13 +67,13 @@ elseif game.PlaceId == 17047374266 then
         end;
 
         if (not char) or (not hrp) then continue; end;
-        
+
         hrp.CFrame = CFrame.new(102.037888, 4999.7251, -87.1630783);
-        
+
         local bv = Instance.new("BodyVelocity");
         bv.Parent = hrp;
-        bv.MaxForce = Vector3.new(0,0,0);
-        bv.Velocity = Vector3.new(0,0,0);
+        bv.MaxForce = Vector3.new(0, 0, 0);
+        bv.Velocity = Vector3.new(0, 0, 0);
         bv.P = 0;
     end;
 else
@@ -87,17 +87,14 @@ else
         end;
 
         if Menu then
-            print("MENU")
             local KT = Menu:FindFirstChild("Karakura Town");
 
             if KT then
-                print("KT")
                 firesignal(KT.MouseButton1Down);
 
                 local SF = Menu:FindFirstChild("ScrollingFrame");
                 if SF then
-                    print("SF")
-                    for i, v in next,(SF:GetChildren()) do
+                    for i, v in next, (SF:GetChildren()) do
                         if v:IsA("TextButton") and v.Visible then
                             firesignal(v.MouseButton1Click);
                         end;
