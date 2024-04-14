@@ -80,7 +80,7 @@ else
 
         if (not char) or (not hrp) then continue; end;
 
-        hrp.CFrame = CFrame.new(102.037888, 4994, -87.1630783);
+        hrp.CFrame = CFrame.new(102.037888, 4999, -87.1630783);
 
 
         local bv = Instance.new("BodyVelocity");
