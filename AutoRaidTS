@@ -7,8 +7,6 @@ local TweenService = game:GetService("TweenService");
 local CoreGui = game:GetService("CoreGui");
 local client = players.LocalPlayer;
 
-local VirtualInputManager = game:GetService("VirtualInputManager");
-
 print("BEING SIGMA !");
 
 repeat wait(); until client.Character;
@@ -23,6 +21,7 @@ client.CharacterAdded:Connect(function()
 end);
 
 queue_on_teleport = (syn and syn.queue_on_teleport) or (fluxus and fluxus.queue_on_teleport) or queue_on_teleport
+
 queue_on_teleport([[loadstring(game:HttpGet('https://raw.githubusercontent.com/nuhuhs/Lunarware/main/TSReload'))()]])
 
 local function StartRaid()
@@ -47,7 +46,7 @@ function functions.Void(target)
         local bv = Instance.new("BodyVelocity");
         bv.Parent = target:FindFirstChild('HumanoidRootPart');
         bv.MaxForce = Vector3.new(100000000376832, 100000000376832, 100000000376832);
-        bv.Velocity = Vector3.new(100000000376832, -100000000376832, 100000000376832);
+        bv.Velocity = Vector3.new(100000000376832, 100000000376832, 100000000376832);
         bv.P = 10000;
     end;
 end;
@@ -58,7 +57,7 @@ if game.PlaceId == 14069678431 then
     end;
 
     StartRaid();
-elseif game.PlaceId == 17047374266 then
+else
     while task.wait() do
         for i, v in pairs(workspace:WaitForChild('Entities'):GetChildren()) do
             if v == char then continue; end;
@@ -76,35 +75,5 @@ elseif game.PlaceId == 17047374266 then
         bv.MaxForce = Vector3.new(0,0,0);
         bv.Velocity = Vector3.new(0,0,0);
         bv.P = 0;
-    end;
-else
-    while task.wait() do
-        local Menu = client.PlayerGui:FindFirstChild("ServerMenu");
-
-        if Menu:FindFirstChild("Frame") and Menu:FindFirstChild("Frame"):FindFirstChild("MainUI") then
-            Menu = Menu:FindFirstChild("Frame"):FindFirstChild("MainUI");
-        else
-            continue;
-        end;
-
-        if Menu then
-            local KT = Menu:FindFirstChild("Karakura Town");
-
-            if KT then
-                local x,y = KT.AbsolutePosition.X, KT.AbsolutePosition.Y;
-                VirtualInputManager:SendMouseButtonEvent(x, y, 0, true, game, 1);
-                wait()
-                VirtualInputManager:SendMouseButtonEvent(x, y, 0, false, game, 1);
-
-                local SF = Menu:FindFirstChild("ScrollingFrame");
-                if SF then
-                    for i, v in next, (SF:GetChildren()) do
-                        if v:IsA("TextButton") and v.Visible and v:FindFirstChild("Location").Text == "Karakura Town" then
-                            firesignal(v.MouseButton1Click);
-                        end;
-                    end;
-                end;
-            end;
-        end;
     end;
 end;
