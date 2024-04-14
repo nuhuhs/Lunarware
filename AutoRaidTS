@@ -87,7 +87,7 @@ else
                 if v == char then continue; end;
                 functions.Void(v);
 
-                if v and v:FindFirstChild("HumanoidRootPart") and (hrp.Position - v:FindFirstChild("HumanoidRootPart").Position).Magnitude < 300 then
+                if v and v:FindFirstChild("HumanoidRootPart") then
                     game:GetService("TweenService"):Create(hrp,
                         TweenInfo.new((hrp.Position - v:FindFirstChild("HumanoidRootPart").Position).Magnitude / 100),
                         { CFrame = v:FindFirstChild("HumanoidRootPart").CFrame }):Play();
