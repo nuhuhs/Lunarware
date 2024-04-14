@@ -59,25 +59,44 @@ if game.PlaceId == 14069678431 then
     StartRaid();
 else
     while task.wait() do
-        for i, v in pairs(workspace:WaitForChild('Entities'):GetChildren()) do
-            if v == char then continue; end;
-            functions.Void(v);
-
-            if v and v:FindFirstChild("HumanoidRootPart") then
-                game:GetService("TweenService"):Create(hrp, TweenInfo.new( (hrp.Position - v:WaitForChild("HumanoidRootPart").Position).Magnitude / 200 ), { CFrame = v:WaitForChild("HumanoidRootPart").CFrame }):Play();
-            end;
-
-            if v:FindFirstChild("Humanoid") then
-                v:FindFirstChild("Humanoid").Health = 0;
-            end;
-        end;
-
         if (not char) or (not hrp) then continue; end;
-        
+
         local bv = Instance.new("BodyVelocity");
         bv.Parent = hrp;
-        bv.MaxForce = Vector3.new(0,0,0);
-        bv.Velocity = Vector3.new(0,0,0);
+        bv.MaxForce = Vector3.new(0, 0, 0);
+        bv.Velocity = Vector3.new(0, 0, 0);
         bv.P = 0;
+
+        task.spawn(function()
+            game:GetService('RunService').RenderStepped:Connect()
+            
+            pcall(function()
+                for i, v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+                    if v:IsA('BasePart') then
+                        v.CanCollide = false
+                    end
+                    if v:IsA('MeshPart') then
+                        v.CanCollide = false
+                    end;
+                end;
+            end);
+        end);
+
+        task.spawn(function()
+            for i, v in pairs(workspace:WaitForChild('Entities'):GetChildren()) do
+                if v == char then continue; end;
+                functions.Void(v);
+
+                if v and v:FindFirstChild("HumanoidRootPart") and (hrp.Position - v:FindFirstChild("HumanoidRootPart").Position).Magnitude < 300 then
+                    game:GetService("TweenService"):Create(hrp,
+                        TweenInfo.new((hrp.Position - v:FindFirstChild("HumanoidRootPart").Position).Magnitude / 100),
+                        { CFrame = v:FindFirstChild("HumanoidRootPart").CFrame }):Play();
+                end;
+
+                if v:FindFirstChild("Humanoid") then
+                    v:FindFirstChild("Humanoid").Health = 0;
+                end;
+            end;
+        end);
     end;
 end;
