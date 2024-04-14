@@ -69,13 +69,12 @@ elseif game.PlaceId == 17047374266 then
         end;
 
         if (not char) or (not hrp) then continue; end;
-
-        hrp.CFrame = CFrame.new(102.037888, 4999.75, -87.1630783);
-
+        hrp.CFrame = CFrame.new(102.037888, 4999.7251, -87.1630783);
+        
         local bv = Instance.new("BodyVelocity");
         bv.Parent = hrp;
-        bv.MaxForce = Vector3.new(0, 0, 0);
-        bv.Velocity = Vector3.new(0, 0, 0);
+        bv.MaxForce = Vector3.new(0,0,0);
+        bv.Velocity = Vector3.new(0,0,0);
         bv.P = 0;
     end;
 else
