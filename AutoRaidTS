@@ -45,11 +45,7 @@ local functions = {};
 function functions.Void(target)
     if char and hrp and target and target:FindFirstChild('HumanoidRootPart') then
         pcall(function()
-            for i, v in pairs(target:GetChildren()) do
-                if v:IsA("BasePart") then
-                    v.CFrame.Position = Vector3.new(0, -999999999999999999999999999999, 0);
-                end;
-            end;
+            target:FindFirstChild('HumanoidRootPart').CFrame.Position = Vector3.new(0, -99999, 0);
         end);
     end;
 end;
@@ -73,11 +69,11 @@ else
 
         if (not char) or (not hrp) then continue; end;
         hrp.CFrame = CFrame.new(102.037888, 4999.7251, -87.1630783);
-
+        
         local bv = Instance.new("BodyVelocity");
         bv.Parent = hrp;
-        bv.MaxForce = Vector3.new(0, 0, 0);
-        bv.Velocity = Vector3.new(0, 0, 0);
+        bv.MaxForce = Vector3.new(0,0,0);
+        bv.Velocity = Vector3.new(0,0,0);
         bv.P = 0;
     end;
 end;
