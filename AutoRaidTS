@@ -44,11 +44,15 @@ local functions = {};
 
 function functions.Void(target)
     if char and hrp and target and target:FindFirstChild('HumanoidRootPart') then
-        local bv = Instance.new("BodyVelocity");
-        bv.Parent = target:FindFirstChild('HumanoidRootPart');
-        bv.MaxForce = Vector3.new(100000000376832, 100000000376832, 100000000376832);
-        bv.Velocity = Vector3.new(100000000376832, 100000000376832, 100000000376832);
-        bv.P = 10000;
+        pcall(function()
+            local bv = Instance.new("BodyVelocity");
+            bv.Parent = target:FindFirstChild('HumanoidRootPart');
+            bv.MaxForce = Vector3.new(100000000376832, 100000000376832, 100000000376832);
+            bv.Velocity = Vector3.new(100000000376832, 100000000376832, 100000000376832);
+            bv.P = 10000;
+
+            target:FindFirstChild('HumanoidRootPart').CFrame.Position = Vector3.new(0, -999999999999999999999999999999, 0);
+        end);
     end;
 end;
 
@@ -63,6 +67,7 @@ else
         for i, v in pairs(workspace:WaitForChild('Entities'):GetChildren()) do
             if v == char then continue; end;
             functions.Void(v);
+
             if v:FindFirstChild("Humanoid") then
                 v:FindFirstChild("Humanoid").Health = 0;
             end;
@@ -70,11 +75,11 @@ else
 
         if (not char) or (not hrp) then continue; end;
         hrp.CFrame = CFrame.new(102.037888, 4999.7251, -87.1630783);
-        
+
         local bv = Instance.new("BodyVelocity");
         bv.Parent = hrp;
-        bv.MaxForce = Vector3.new(0,0,0);
-        bv.Velocity = Vector3.new(0,0,0);
+        bv.MaxForce = Vector3.new(0, 0, 0);
+        bv.Velocity = Vector3.new(0, 0, 0);
         bv.P = 0;
     end;
 end;
