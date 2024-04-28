@@ -1,5 +1,5 @@
 -- GPO Impel DOWN
-print("V1.31")
+print("V1.32")
 local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/nuhuhs/LunarUI/main/Main'))();
 
 do -- Anti Error
@@ -68,11 +68,12 @@ local Storage = {
     ['CurrentTween'] = nil,
 };
 
-local Players = game:GetService("Players");
 local TweenService = game:GetService("TweenService");
-local RunService = game:GetService("RunService");
+local Players = game:GetService("Players");
 local ReplicatedStorage = game:GetService("ReplicatedStorage");
-local Events = ReplicatedStorage:WaitForChild("Events")
+local RunService = game:GetService("RunService");
+
+local Events = ReplicatedStorage:WaitForChild("Events");
 local M1Reset = Events:WaitForChild("resetM1");
 local M1Event = Events:WaitForChild("CombatRegister");
 
@@ -82,6 +83,15 @@ local hum = char:WaitForChild("Humanoid");
 local hrp = char:WaitForChild("HumanoidRootPart");
 local VirtualInputManager = game:GetService("VirtualInputManager")
 local camera = workspace.CurrentCamera;
+
+function clickMB(mb)
+    pcall(function()
+        local mb = mb or 1;
+        VirtualInputManager:SendMouseButtonEvent(0, 0, mb, true, game);
+        wait()
+        VirtualInputManager:SendMouseButtonEvent(0, 0, mb, false, game);
+    end)
+end
 
 function pressKey(key)
     pcall(function()
@@ -158,6 +168,8 @@ local function TweenTo(pos, speed)
                             BypassDB[v] = false;
                         end);
                     end;
+                elseif v == 'Godmode' then
+                    Events:WaitForChild("Skill"):InvokeServer("BasicEvasive");
                 end;
             end;
         end;
@@ -198,7 +210,7 @@ local function TweenTo(pos, speed)
                             "|ServerScriptService.Skills.Skills.SkillContainer.Gomu-Gomu.Gomu-Gomu no Rocket")
                             :FireServer(hrp.CFrame);
                     end;
-                elseif v == "Godmode" then
+                elseif v == 'Godmode' then
                     Events:WaitForChild("Skill"):InvokeServer("BasicEvasive");
                 end;
             end;
@@ -306,6 +318,7 @@ local function KillNearbyMobs()
 
     RunService.Heartbeat:Wait();
 end;
+
 local Lunar = Library:CreateWindow("Lunar // GPO");
 local Main = Lunar:CreateTab("Main");
 local Settings = Lunar:CreateTab("Settings");
@@ -337,10 +350,7 @@ local AutoImpel = Section:CreateToggle({
             db = true;
             task.wait(2.5);
             db = false;
-
-            if Checkpoints[ImpelCheckpoint - 1] then
-                Checkpoints[ImpelCheckpoint - 1].Wait = 0;
-            end;
+            Checkpoints[ImpelCheckpoint - 1].Wait = 0;
 
             if not startTick then
                 getgenv().startTick = tick();
@@ -382,15 +392,15 @@ local AutoImpel = Section:CreateToggle({
                         end;
                     end;
                 elseif ImpelCheckpoint == 1 then
-                    if (Nearest and Nearest:FindFirstChild("HumanoidRootPart") and (hrp.Position - Nearest:FindFirstChild("HumanoidRootPart").Position).Magnitude >= 350) then
-                        local isDone = TweenTo(Checkpoints[1].CFrame);
+                    local isDone = TweenTo(Checkpoints[1].CFrame);
 
-                        if isDone then
+                    if isDone then
+                        if (Nearest and Nearest:FindFirstChild("HumanoidRootPart") and (hrp.Position - Nearest:FindFirstChild("HumanoidRootPart").Position).Magnitude >= 350) then
                             ImpelCheckpoint = ImpelCheckpoint + 1;
-                        end;
-                    else
-                        if Nearest and Nearest:FindFirstChild("HumanoidRootPart") then
-                            TweenTo(Nearest:FindFirstChild("HumanoidRootPart").CFrame);
+                        else
+                            if Nearest and Nearest:FindFirstChild("HumanoidRootPart") then
+                                TweenTo(Nearest:FindFirstChild("HumanoidRootPart").CFrame);
+                            end;
                         end;
                     end;
                 elseif ImpelCheckpoint == 2 then
@@ -402,8 +412,7 @@ local AutoImpel = Section:CreateToggle({
                 else
                     pressKey("E");
                     if Nearest and Nearest:FindFirstChild("HumanoidRootPart") then
-                        CurrentBypasses = CurrentBypasses or {};
-                        if Nearest:FindFirstChild("Festival ShieldSword") and not table.find(CurrentBypasses, "Godmode") then
+                        if Nearest:FindFirstChild("Festival ShieldSword") then
                             if Nearest:FindFirstChild("HumanoidRootPart"):FindFirstChildOfClass("BodyVelocity") then
                                 kelvin = true;
                                 TweenTo(Nearest:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, 30, 0));
@@ -500,7 +509,7 @@ local SpeedBypasses = Section:CreateDropdown({
 
 Section:CreateDivider();
 
-local FlowerStack = Section:CreateToggle({
+local PunchSpammer = Section:CreateToggle({
     Text = "Instakill Nearby",
     Default = false,
     Flag = "PunchSpammer",
@@ -542,11 +551,11 @@ local Noclip = Section:CreateToggle({
 
 Section:CreateDivider();
 
-Section:CreateSlider({
+local TimeTaken = Section:CreateSlider({
     Text = "Minimum TTC (Time to Complete)",
     Default = 8,
     Max = 16,
-    Min = 0,
+    Min = 6,
     Flag = "timeToDo_Flag",
 
     Callback = function(Value)
@@ -554,6 +563,6 @@ Section:CreateSlider({
     end,
 });
 
-Section:CreateLabel({ Text = "-- IF TO LOW U GET SHADOW BANNED (NO TRADING NO OPENING CHESTS)" });
+local TimeTaken = Section:CreateLabel({ Text = "-- IF TO LOW U GET SHADOW BANNED (NO TRADING NO OPENING CHESTS)" });
 
 Library:LoadSettings();
