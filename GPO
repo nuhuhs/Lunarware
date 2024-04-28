@@ -69,7 +69,7 @@ local Storage = {
 
 local TweenService = game:GetService("TweenService");
 local RunService = game:GetService("RunService");
-local ReplicatedStorage = game;GetService("ReplicatedStorage");
+local ReplicatedStorage = game:GetService("ReplicatedStorage");
 local Events = ReplicatedStorage:WaitForChild("Events")
 
 local client = game:GetService("Players").LocalPlayer;
