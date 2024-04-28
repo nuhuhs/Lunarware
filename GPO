@@ -1,5 +1,5 @@
 -- GPO Impel DOWN
-print("V1.1")
+print("UPDATED")
 local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/nuhuhs/LunarUI/main/Main'))();
 
 do -- Anti Error
@@ -69,12 +69,9 @@ local Storage = {
 };
 
 local TweenService = game:GetService("TweenService");
-local Players = game:GetService("Players");
-local ReplicatedStorage = game:GetService("ReplicatedStorage");
 local RunService = game:GetService("RunService");
-local Events = ReplicatedStorage:WaitForChild("Events");
-local M1Reset = Events:WaitForChild("resetM1");
-local M1Event = Events:WaitForChild("CombatRegister");
+local ReplicatedStorage = game:GetService("ReplicatedStorage");
+local Events = ReplicatedStorage:WaitForChild("Events")
 
 local client = game:GetService("Players").LocalPlayer;
 local char = client.Character or client.CharacterAdded;
@@ -337,7 +334,10 @@ local AutoImpel = Section:CreateToggle({
             db = true;
             task.wait(2.5);
             db = false;
-            Checkpoints[ImpelCheckpoint - 1].Wait = 0;
+
+            if Checkpoints[ImpelCheckpoint - 1] then
+                Checkpoints[ImpelCheckpoint - 1].Wait = 0;
+            end;
 
             if not startTick then
                 getgenv().startTick = tick();
@@ -399,6 +399,7 @@ local AutoImpel = Section:CreateToggle({
                 else
                     pressKey("E");
                     if Nearest and Nearest:FindFirstChild("HumanoidRootPart") then
+                        CurrentBypasses = CurrentBypasses or {};
                         if Nearest:FindFirstChild("Festival ShieldSword") and not table.find(CurrentBypasses, "Godmode") then
                             if Nearest:FindFirstChild("HumanoidRootPart"):FindFirstChildOfClass("BodyVelocity") then
                                 kelvin = true;
@@ -538,7 +539,7 @@ local Noclip = Section:CreateToggle({
 
 Section:CreateDivider();
 
-local TimeTaken = Section:CreateSlider({
+Section:CreateSlider({
     Text = "Minimum TTC (Time to Complete)",
     Default = 8,
     Max = 16,
@@ -550,6 +551,6 @@ local TimeTaken = Section:CreateSlider({
     end,
 });
 
-local TimeTaken = Section:CreateLabel({ Text = "-- IF TO LOW U GET SHADOW BANNED (NO TRADING NO OPENING CHESTS)" });
+Section:CreateLabel({ Text = "-- IF TO LOW U GET SHADOW BANNED (NO TRADING NO OPENING CHESTS)" });
 
 Library:LoadSettings();
