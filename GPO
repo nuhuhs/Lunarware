@@ -68,10 +68,13 @@ local Storage = {
     ['CurrentTween'] = nil,
 };
 
+local Players = game:GetService("Players");
 local TweenService = game:GetService("TweenService");
 local RunService = game:GetService("RunService");
 local ReplicatedStorage = game:GetService("ReplicatedStorage");
 local Events = ReplicatedStorage:WaitForChild("Events")
+local M1Reset = Events:WaitForChild("resetM1");
+local M1Event = Events:WaitForChild("CombatRegister");
 
 local client = game:GetService("Players").LocalPlayer;
 local char = client.Character or client.CharacterAdded;
