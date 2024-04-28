@@ -69,6 +69,8 @@ local Storage = {
 
 local TweenService = game:GetService("TweenService");
 local RunService = game:GetService("RunService");
+local ReplicatedStorage = game;GetService("ReplicatedStorage");
+local Events = ReplicatedStorage:WaitForChild("Events")
 
 local client = game:GetService("Players").LocalPlayer;
 local char = client.Character or client.CharacterAdded;
@@ -76,15 +78,6 @@ local hum = char:WaitForChild("Humanoid");
 local hrp = char:WaitForChild("HumanoidRootPart");
 local VirtualInputManager = game:GetService("VirtualInputManager")
 local camera = workspace.CurrentCamera;
-
-function clickMB(mb)
-    pcall(function()
-        local mb = mb or 1;
-        VirtualInputManager:SendMouseButtonEvent(0, 0, mb, true, game);
-        wait()
-        VirtualInputManager:SendMouseButtonEvent(0, 0, mb, false, game);
-    end)
-end
 
 function pressKey(key)
     pcall(function()
@@ -201,6 +194,8 @@ local function TweenTo(pos, speed)
                             "|ServerScriptService.Skills.Skills.SkillContainer.Gomu-Gomu.Gomu-Gomu no Rocket")
                             :FireServer(hrp.CFrame);
                     end;
+                elseif v == "Godmode" then
+                    Events:WaitForChild("Skill"):InvokeServer("BasicEvasive");
                 end;
             end;
         end;
@@ -216,11 +211,24 @@ local function TweenTo(pos, speed)
     return isClose;
 end;
 
+local function IsMob(mob)
+    if mob and mob:IsA("Model") and not Players:GetPlayerFromCharacter(mob) then
+        local x = mob:FindFirstChild("Humanoid");
+        local y = mob:FindFirstChild("HumanoidRootPart");
+
+        if x and x.Health > 0 and y then
+            return true;
+        end
+    end;
+
+    return false;
+end;
+
 local function NearestMob()
     local largest = math.huge
     local closestChild = nil
     for i, v in pairs(workspace:WaitForChild("NPCs"):GetChildren()) do
-        if v:IsA("Model") and not v:FindFirstChild("ForceField") and v:FindFirstChild("Humanoid") and v:FindFirstChild("Humanoid").Health > 0 and v:FindFirstChild("HumanoidRootPart") then
+        if IsMob(v) and not v:FindFirstChild("ForceField") then
             local magnitude = (hrp.Position - v:GetBoundingBox().Position).magnitude
             if magnitude < largest then
                 closestChild = v
@@ -231,6 +239,69 @@ local function NearestMob()
     return closestChild
 end;
 
+local function MobsInRadius(range)
+    if typeof(range) ~= "number" then range = 20 end;
+    local range = range;
+    local mobs = {};
+
+    for i, v in pairs(workspace:WaitForChild("NPCs"):GetChildren()) do
+        if IsMob(v) and not v:FindFirstChild("ForceField") then
+            local magnitude = (hrp.Position - v:GetBoundingBox().Position).magnitude
+            if magnitude <= range then
+                table.insert(mobs, v);
+            end;
+        end;
+    end;
+    return mobs
+end;
+
+local function KillNearbyMobs()
+    local Targets = MobsInRadius();
+
+    local TableSpam = {};
+    local HRPAmount = 0;
+
+    for idx, target in pairs(Targets) do
+        local TargetHRP = target:FindFirstChild("HumanoidRootPart");
+
+        if TargetHRP then
+            for i = 1, 500 do
+                TableSpam[HRPAmount + 1] = TargetHRP;
+                HRPAmount = HRPAmount + 1;
+            end;
+        end;
+    end;
+
+    if HRPAmount > 1 then
+        M1String = M1String or 1;
+
+        if M1String > 4 then
+            M1String = 1;
+        else
+            M1String = M1String + 1
+        end;
+
+        local args = {
+            [1] = {
+                [1] = "damage",
+                [2] = TableSpam,
+                [3] = "Melee",
+                [4] = {
+                    [1] = M1String,
+                    [2] = "Ground",
+                    [3] = "Melee"
+                },
+                [5] = true,
+                [6] = CFrame.new(0, 0, 0),
+                ["aircombo"] = "Ground"
+            }
+        }
+
+        M1Event:InvokeServer(unpack(args))
+    end;
+
+    RunService.Heartbeat:Wait();
+end;
 local Lunar = Library:CreateWindow("Lunar // GPO");
 local Main = Lunar:CreateTab("Main");
 local Settings = Lunar:CreateTab("Settings");
@@ -276,7 +347,7 @@ local AutoImpel = Section:CreateToggle({
                 local Nearest = NearestMob();
 
                 camera.CFrame = CFrame.new(camera.CFrame.Position) * CFrame.Angles(math.rad(-90), 0, 0);
-                clickMB(1);
+                clickMB(0);
 
                 if ImpelCheckpoint == 0 then
                     if workspace:FindFirstChild("Effects") then
@@ -304,15 +375,15 @@ local AutoImpel = Section:CreateToggle({
                         end;
                     end;
                 elseif ImpelCheckpoint == 1 then
-                    local isDone = TweenTo(Checkpoints[1].CFrame);
+                    if (Nearest and Nearest:FindFirstChild("HumanoidRootPart") and (hrp.Position - Nearest:FindFirstChild("HumanoidRootPart").Position).Magnitude >= 350) then
+                        local isDone = TweenTo(Checkpoints[1].CFrame);
 
-                    if isDone then
-                        if (Nearest and Nearest:FindFirstChild("HumanoidRootPart") and (hrp.Position - Nearest:FindFirstChild("HumanoidRootPart").Position).Magnitude >= 350) then
+                        if isDone then
                             ImpelCheckpoint = ImpelCheckpoint + 1;
-                        else
-                            if Nearest and Nearest:FindFirstChild("HumanoidRootPart") then
-                                TweenTo(Nearest:FindFirstChild("HumanoidRootPart").CFrame);
-                            end;
+                        end;
+                    else
+                        if Nearest and Nearest:FindFirstChild("HumanoidRootPart") then
+                            TweenTo(Nearest:FindFirstChild("HumanoidRootPart").CFrame);
                         end;
                     end;
                 elseif ImpelCheckpoint == 2 then
@@ -324,7 +395,7 @@ local AutoImpel = Section:CreateToggle({
                 else
                     pressKey("E");
                     if Nearest and Nearest:FindFirstChild("HumanoidRootPart") then
-                        if Nearest:FindFirstChild("Festival ShieldSword") then
+                        if Nearest:FindFirstChild("Festival ShieldSword") and not table.find(CurrentBypasses, "Godmode") then
                             if Nearest:FindFirstChild("HumanoidRootPart"):FindFirstChildOfClass("BodyVelocity") then
                                 kelvin = true;
                                 TweenTo(Nearest:FindFirstChild("HumanoidRootPart").CFrame * CFrame.new(0, 30, 0));
@@ -411,7 +482,7 @@ Section:CreateDivider();
 local SpeedBypasses = Section:CreateDropdown({
     Text = "Speed Bypasses",
     Multi = true,
-    Options = { "Geppo", "Dash", "Pika", "Gomu" },
+    Options = { "Geppo", "Dash", "Pika", "Gomu", "Godmode" },
     Flag = "SpeedBypasses_Flag",
 
     Callback = function(Value)
@@ -422,16 +493,15 @@ local SpeedBypasses = Section:CreateDropdown({
 Section:CreateDivider();
 
 local FlowerStack = Section:CreateToggle({
-    Text = "Stack Flower Sword",
+    Text = "Instakill Nearby",
     Default = false,
-    Flag = "FlowerStacker",
+    Flag = "PunchSpammer",
 
     Callback = function(Value)
-        getgenv().FlowerStack = Value;
+        getgenv().PunchSpammer = Value;
 
-        while FlowerStack do
-            game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Skill"):InvokeServer(
-                "Absolute Seduction");
+        while PunchSpammer do
+            KillNearbyMobs();
             task.wait();
         end;
     end,
@@ -468,7 +538,7 @@ local TimeTaken = Section:CreateSlider({
     Text = "Minimum TTC (Time to Complete)",
     Default = 8,
     Max = 16,
-    Min = 6,
+    Min = 0,
     Flag = "timeToDo_Flag",
 
     Callback = function(Value)
@@ -476,6 +546,6 @@ local TimeTaken = Section:CreateSlider({
     end,
 });
 
-local TimeTaken = Section:CreateLabel({Text = "-- IF TO LOW U GET SHADOW BANNED (NO TRADING NO OPENING CHESTS)"});
+local TimeTaken = Section:CreateLabel({ Text = "-- IF TO LOW U GET SHADOW BANNED (NO TRADING NO OPENING CHESTS)" });
 
 Library:LoadSettings();
